@@ -34,5 +34,7 @@ public class Law extends AbstractPersistable<Long> {
 
     @OneToMany(cascade = CascadeType.PERSIST, mappedBy = "q_l_lawId")
     private List<Questions> l_q_questions;
+
+
 }
 
