@@ -17,7 +17,7 @@
                 </th>
             </thead>
             <tbody>
-                <tr v-for="law in laws" v-bind:key="law.id" v>
+                <tr class="column" v-for="law in laws" v-bind:key="law.id" v>
                     <td> {{law.id}} </td>
                     <td> {{law.l_gesetz}} </td>
                     <td> {{law.l_typ}} </td>
