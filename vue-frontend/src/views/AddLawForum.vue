@@ -42,6 +42,7 @@
 import axios from "axios";
 import useValidate from '@vuelidate/core'
 import { required } from '@vuelidate/validators'
+
 export default {
     data() {
         return {

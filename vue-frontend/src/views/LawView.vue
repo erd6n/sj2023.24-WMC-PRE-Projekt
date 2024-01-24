@@ -46,27 +46,25 @@ import axios from "axios";
             }
         },
         methods: {
-            getLaws(){
-                LawService.getLaws().then((response) => {
-                    this.laws = response.data;
-                });
+            async getLaws(){
+                this.laws = await LawService.getLaws();
             },
             async deleteLaw(id){
-                await axios.delete(`http://localhost:8080/api/laws/${id}`)
-                .then(response => {
-                    alert('Law erfolgreich gelöscht:', response.data);
-                    location.reload();
-                })
-                .catch(error => {
-                    alert('Fehler beim Löschen des Gesetzes:', error);
-                });
+                try {
+                    await axios.delete(`http://localhost:8080/api/laws/${id}`);
+                    alert(`Law ${id} erfolgreich gelöscht.`);
+                    await this.getLaws();
+                }
+                catch (e) {
+                    alert('Fehler beim Löschen des Gesetzes:', JSON.stringify(e));
+                }
             },
             async renderEditView(id){
                 this.$router.push({name: 'EditLaw', params: {id: id}})
             }
         },
-        created (){
-            this.getLaws()
+        async created (){
+            await this.getLaws()
         }
     }
 </script>
