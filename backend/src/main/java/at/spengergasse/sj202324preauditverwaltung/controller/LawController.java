@@ -55,9 +55,7 @@ public class LawController {
                     law.setL_gueltigAb(updatedLaw.getL_gueltigAb());
                     return lawRepository.save(law);
                 })
-                .orElseGet(() -> {
-                    return lawRepository.save(updatedLaw);
-                });
+                .orElseGet(() -> lawRepository.save(updatedLaw));
     }
 }
 

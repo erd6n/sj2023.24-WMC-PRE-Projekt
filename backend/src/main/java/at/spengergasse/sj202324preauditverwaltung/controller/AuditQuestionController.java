@@ -44,8 +44,6 @@ public class AuditQuestionController {
                     auditQuestion.setCreatedDate(updatedAuditQuestion.getCreatedDate());
                     return auditQuestionRepository.save(auditQuestion);
                 })
-                .orElseGet(() -> {
-                    return auditQuestionRepository.save(updatedAuditQuestion);
-                });
+                .orElseGet(() -> auditQuestionRepository.save(updatedAuditQuestion));
     }
 }

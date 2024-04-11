@@ -50,8 +50,6 @@ public class AuditController {
                     audit.setA_anzTage(updatedAudit.getA_anzTage());
                     return auditRepository.save(audit);
                 })
-                .orElseGet(() -> {
-                    return auditRepository.save(updatedAudit);
-                });
+                .orElseGet(() -> auditRepository.save(updatedAudit));
     }
 }

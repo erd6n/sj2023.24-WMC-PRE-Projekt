@@ -43,8 +43,6 @@ public class QuestionsController {
                     questions.setQ_audited(updatedQuestions.getAudited());
                     return questionsRepository.save(questions);
                 })
-                .orElseGet(() -> {
-                    return questionsRepository.save(updatedQuestions);
-                });
+                .orElseGet(() -> questionsRepository.save(updatedQuestions));
     }
 }
