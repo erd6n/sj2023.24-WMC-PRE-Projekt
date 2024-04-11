@@ -46,7 +46,7 @@ public class AuditController {
                     audit.setA_ort(updatedAudit.getA_ort());
                     audit.setA_thema(updatedAudit.getA_thema());
                     audit.setA_typ(updatedAudit.getA_typ());
-                    audit.setA_q_questions(updatedAudit.getA_q_questions());
+                    audit.setAuditQuestions(updatedAudit.getAuditQuestions());
                     audit.setA_anzTage(updatedAudit.getA_anzTage());
                     return auditRepository.save(audit);
                 })

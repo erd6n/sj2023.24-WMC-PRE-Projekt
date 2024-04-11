@@ -8,7 +8,6 @@ import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
-import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
@@ -19,13 +18,12 @@ public class LawController {
     @Autowired
     private LawRepository lawRepository;
 
-
-    @GetMapping("/") // Verwenden Sie "/" um alle Gesetze abzurufen
+    @GetMapping("/")
     public List<Law> fetchLaws() {
         return lawRepository.findAll();
     }
 
-    @GetMapping("/{id}") // Verwenden Sie "/{id}" um ein einzelnes Gesetz abzurufen
+    @GetMapping("/{id}")
     public Law getLawById(@PathVariable Long id) {
         return lawRepository.findById(id)
                 .orElseThrow(() -> new ResourceNotFoundException("Law not found with id " + id));
@@ -36,12 +34,12 @@ public class LawController {
         return Arrays.stream(LawTypes.values()).toList();
     }
 
-    @PostMapping("/") // Verwenden Sie "/" um ein neues Gesetz hinzuzufügen
+    @PostMapping("/")
     public Law newLaw(@Valid @RequestBody Law newLaw) {
         return lawRepository.save(newLaw);
     }
 
-    @DeleteMapping("/{id}") // Verwenden Sie "/{id}" um ein Gesetz zu löschen
+    @DeleteMapping("/{id}")
     public void deleteLawById(@PathVariable Long id) {
         lawRepository.deleteById(id);
     }

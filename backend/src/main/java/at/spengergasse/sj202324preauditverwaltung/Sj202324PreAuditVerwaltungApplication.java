@@ -1,13 +1,10 @@
 package at.spengergasse.sj202324preauditverwaltung;
 
-import at.spengergasse.sj202324preauditverwaltung.controller.ResourceNotFoundException;
-import at.spengergasse.sj202324preauditverwaltung.model.Law;
-import at.spengergasse.sj202324preauditverwaltung.model.LawTypes;
-import at.spengergasse.sj202324preauditverwaltung.model.Questions;
+import at.spengergasse.sj202324preauditverwaltung.model.*;
+import at.spengergasse.sj202324preauditverwaltung.repository.AuditQuestionRepository;
 import at.spengergasse.sj202324preauditverwaltung.repository.AuditRepository;
 import at.spengergasse.sj202324preauditverwaltung.repository.LawRepository;
 import at.spengergasse.sj202324preauditverwaltung.repository.QuestionsRepository;
-import org.apache.catalina.LifecycleState;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.CommandLineRunner;
 import org.springframework.boot.SpringApplication;
@@ -31,35 +28,58 @@ public class Sj202324PreAuditVerwaltungApplication implements CommandLineRunner 
     private QuestionsRepository questionsRepository;
     @Autowired
     private AuditRepository auditsRepository;
+    @Autowired
+    private AuditQuestionRepository auditQuestionRepository;
     Random random = new Random();
 
     @Override
     public void run(String... args) throws Exception {
-        for (int i = 0; i < 27; i++) {
-            String typ = "";
-            String bezeichnung = "";
-            LawTypes lawType;
-            int rand = random.nextInt(3);
-
-            if (rand == 0) {
-                lawType = LawTypes.AMC;
-                bezeichnung = "AMC1.CAMO.A.100";
-            } else if (rand == 1) {
-                lawType = LawTypes.GM;
-                bezeichnung = "GM1.CAMO.A.100";
-            } else {
-                lawType = LawTypes.R;
-                bezeichnung = "CAMO.A.100";
-            }
-            lawRepository.save(
-                    Law.builder()
-                    .l_gesetz("PART.CAMO")
-                    .l_typ(lawType)
-                    .l_bezeichnung(bezeichnung)
-                    .l_text("Lore ipsum …")
+        for (int i = 0; i < 10; i++) {
+            Law law = Law.builder()
+                    .l_gesetz("Gesetz " + i)
+                    .l_typ(LawTypes.values()[random.nextInt(LawTypes.values().length)])
+                    .l_bezeichnung("Bezeichnung " + i)
+                    .l_text("Text " + i)
                     .l_gueltigAb("2024-01-01")
-                    .build()
-            );
+                    .build();
+            lawRepository.save(law);
+
+            List<AuditQuestion> auditQuestions = new ArrayList<>();
+            for (int j = 0; j < 10; j++) {
+                Questions question = Questions.builder()
+                        .q_l_law(law)
+                        .q_finding_level(random.nextInt(4))
+                        .q_audited(random.nextBoolean())
+                        .build();
+                questionsRepository.save(question);
+
+                AuditQuestion auditQuestion = AuditQuestion.builder()
+                        .audit(null)
+                        .question(question)
+                        .createdDate(new Date())
+                        .build();
+                auditQuestions.add(auditQuestion);
+            }
+
+            Audit audit = Audit.builder()
+                    .a_auditDatum(new Date())
+                    .a_leadAuditor("Lead Auditor " + i)
+                    .a_leadAuditee("Lead Auditee " + i)
+                    .a_auditStatus("Audit Status " + i)
+                    .a_ort("Ort " + i)
+                    .a_thema("Thema " + i)
+                    .a_typ("Typ " + i)
+                    .auditQuestions(auditQuestions)
+                    .a_anzTage(random.nextInt(10))
+                    .build();
+
+            auditsRepository.save(audit);
+
+            for (AuditQuestion auditQuestion : auditQuestions) {
+                auditQuestion.setAudit(audit);
+                auditQuestionRepository.save(auditQuestion);
+            }
         }
     }
 }
+

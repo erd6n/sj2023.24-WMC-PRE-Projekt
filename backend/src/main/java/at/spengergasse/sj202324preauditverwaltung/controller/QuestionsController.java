@@ -1,10 +1,6 @@
 package at.spengergasse.sj202324preauditverwaltung.controller;
 
-import at.spengergasse.sj202324preauditverwaltung.model.Audit;
 import at.spengergasse.sj202324preauditverwaltung.model.Questions;
-import at.spengergasse.sj202324preauditverwaltung.model.Questions;
-import at.spengergasse.sj202324preauditverwaltung.repository.AuditRepository;
-import at.spengergasse.sj202324preauditverwaltung.repository.QuestionsRepository;
 import at.spengergasse.sj202324preauditverwaltung.repository.QuestionsRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
@@ -43,8 +39,6 @@ public class QuestionsController {
     public Questions updateQuestions(@RequestBody Questions updatedQuestions, @PathVariable Long id) {
         return questionsRepository.findById(id)
                 .map(questions -> {
-                    questions.setQ_a_audits(updatedQuestions.getQ_a_audits());
-                    questions.setQ_l_lawId(updatedQuestions.getQ_l_lawId());
                     questions.setQ_finding_level(updatedQuestions.getQ_finding_level());
                     questions.setQ_audited(updatedQuestions.getAudited());
                     return questionsRepository.save(questions);

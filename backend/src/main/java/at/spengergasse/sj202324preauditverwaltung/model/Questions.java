@@ -1,6 +1,11 @@
 package at.spengergasse.sj202324preauditverwaltung.model;
 
-import jakarta.persistence.*;
+import com.fasterxml.jackson.annotation.JsonIdentityInfo;
+import com.fasterxml.jackson.annotation.JsonIdentityReference;
+import com.fasterxml.jackson.annotation.ObjectIdGenerators;
+import jakarta.persistence.Entity;
+import jakarta.persistence.ManyToOne;
+import jakarta.persistence.OneToMany;
 import lombok.*;
 import org.springframework.data.jpa.domain.AbstractPersistable;
 
@@ -12,13 +17,14 @@ import java.util.List;
 @Entity
 @Setter
 @Builder
-@Table(name = "questions")
+@JsonIdentityInfo(generator = ObjectIdGenerators.PropertyGenerator.class, property = "id")
 public class Questions extends AbstractPersistable<Long> {
-    @ManyToMany(cascade = {CascadeType.PERSIST, CascadeType.MERGE})
-    private List<Audit> q_a_audits;
+    @OneToMany(mappedBy = "question")
+    private List<AuditQuestion> auditQuestions;
 
+    @JsonIdentityReference(alwaysAsId = true)
     @ManyToOne()
-    private Law q_l_lawId;
+    private Law q_l_law;
 
     private boolean q_audited;
     private int q_finding_level;

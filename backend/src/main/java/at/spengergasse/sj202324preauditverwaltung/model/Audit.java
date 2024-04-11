@@ -1,6 +1,8 @@
 package at.spengergasse.sj202324preauditverwaltung.model;
 
-import jakarta.persistence.*;
+import com.fasterxml.jackson.annotation.JsonManagedReference;
+import jakarta.persistence.Entity;
+import jakarta.persistence.OneToMany;
 import lombok.*;
 import org.springframework.data.jpa.domain.AbstractPersistable;
 
@@ -14,7 +16,6 @@ import java.util.List;
 @Setter
 @Builder
 public class Audit extends AbstractPersistable<Long> {
-    @Column(name="a_auditDatum")
     private Date a_auditDatum;
     private String a_leadAuditor;
     private String a_leadAuditee;
@@ -23,10 +24,9 @@ public class Audit extends AbstractPersistable<Long> {
     private String a_thema;
     private String a_typ;
 
-    @ManyToMany(mappedBy = "q_a_audits")
-    private List<Questions> a_q_questions;
-
+    @JsonManagedReference
+    @OneToMany(mappedBy = "audit")
+    private List<AuditQuestion> auditQuestions;
 
     private int a_anzTage;
-
 }
