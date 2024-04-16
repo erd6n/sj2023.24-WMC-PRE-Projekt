@@ -53,6 +53,7 @@ public class LawController {
                     law.setL_bezeichnung(updatedLaw.getL_bezeichnung());
                     law.setL_text(updatedLaw.getL_text());
                     law.setL_gueltigAb(updatedLaw.getL_gueltigAb());
+                    law.setL_q_questions(updatedLaw.getL_q_questions());
                     return lawRepository.save(law);
                 })
                 .orElseGet(() -> lawRepository.save(updatedLaw));

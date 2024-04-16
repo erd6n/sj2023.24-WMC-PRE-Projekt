@@ -1,6 +1,7 @@
 package at.spengergasse.sj202324preauditverwaltung.model;
 
 import com.fasterxml.jackson.annotation.JsonManagedReference;
+import jakarta.persistence.CascadeType;
 import jakarta.persistence.Entity;
 import jakarta.persistence.OneToMany;
 import lombok.*;
@@ -25,7 +26,8 @@ public class Audit extends AbstractPersistable<Long> {
     private String a_typ;
 
     @JsonManagedReference
-    @OneToMany(mappedBy = "audit")
+    //@OneToMany(mappedBy = "audit")
+    @OneToMany(mappedBy = "audit", cascade = CascadeType.ALL, orphanRemoval = true)
     private List<AuditQuestion> auditQuestions;
 
     private int a_anzTage;

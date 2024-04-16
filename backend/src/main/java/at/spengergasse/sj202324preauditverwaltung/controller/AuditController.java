@@ -1,6 +1,7 @@
 package at.spengergasse.sj202324preauditverwaltung.controller;
 
 import at.spengergasse.sj202324preauditverwaltung.model.Audit;
+import at.spengergasse.sj202324preauditverwaltung.repository.AuditQuestionRepository;
 import at.spengergasse.sj202324preauditverwaltung.repository.AuditRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
@@ -13,6 +14,8 @@ import java.util.List;
 public class AuditController {
     @Autowired
     private AuditRepository auditRepository;
+    @Autowired
+    private AuditQuestionRepository auditQuestionRepository;
 
     @GetMapping("/")
     public List<Audit> fetchAudits() {
@@ -46,8 +49,12 @@ public class AuditController {
                     audit.setA_ort(updatedAudit.getA_ort());
                     audit.setA_thema(updatedAudit.getA_thema());
                     audit.setA_typ(updatedAudit.getA_typ());
-                    audit.setAuditQuestions(updatedAudit.getAuditQuestions());
                     audit.setA_anzTage(updatedAudit.getA_anzTage());
+
+                    // Clear the existing collection and add all from the updated one
+                    audit.getAuditQuestions().clear();
+                    audit.getAuditQuestions().addAll(updatedAudit.getAuditQuestions());
+
                     return auditRepository.save(audit);
                 })
                 .orElseGet(() -> auditRepository.save(updatedAudit));

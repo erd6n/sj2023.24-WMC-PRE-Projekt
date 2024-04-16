@@ -6,6 +6,7 @@ import com.fasterxml.jackson.annotation.ObjectIdGenerators;
 import jakarta.persistence.CascadeType;
 import jakarta.persistence.Entity;
 import jakarta.persistence.OneToMany;
+import jakarta.persistence.Table;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;
 import lombok.*;
@@ -19,6 +20,7 @@ import java.util.List;
 @Entity
 @Setter
 @Builder
+@Table(name = "law")
 @JsonIdentityInfo(generator = ObjectIdGenerators.PropertyGenerator.class, property = "id")
 public class Law extends AbstractPersistable<Long> {
     @NotBlank(message = "Gesetz darf nicht leer sein")
@@ -37,6 +39,6 @@ public class Law extends AbstractPersistable<Long> {
     private String l_gueltigAb;
 
     @JsonManagedReference
-    @OneToMany(cascade = CascadeType.PERSIST, mappedBy = "q_l_law")
+    @OneToMany(mappedBy = "q_l_law")
     private List<Questions> l_q_questions;
 }
